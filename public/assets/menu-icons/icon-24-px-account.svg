@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <filter id="wyosomisva">
+            <feColorMatrix in="SourceGraphic" values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0.700000 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g>
+                    <g filter="url(#wyosomisva)" transform="translate(-32 -667) translate(0 104) translate(0 350) translate(0 200)">
+                        <g>
+                            <path fill="#3C6AF5" fill-rule="nonzero" d="M14 14.25c2.55 0 4.631 2.01 4.745 4.533l.005.217v2h-1.5v-2c0-1.733-1.356-3.15-3.066-3.245L14 15.75h-4c-1.733 0-3.15 1.356-3.245 3.066L6.75 19v2h-1.5v-2c0-2.55 2.01-4.631 4.533-4.745L10 14.25h4zm-2-11c2.623 0 4.75 2.127 4.75 4.75s-2.127 4.75-4.75 4.75S7.25 10.623 7.25 8 9.377 3.25 12 3.25zm0 1.5c-1.795 0-3.25 1.455-3.25 3.25s1.455 3.25 3.25 3.25S15.25 9.795 15.25 8 13.795 4.75 12 4.75z" transform="translate(32 13)"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
