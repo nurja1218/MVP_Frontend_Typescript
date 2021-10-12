@@ -1,7 +1,8 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { colors } from '../../../configs/variables';
 
-export const useStyles = makeStyles((theme) => ({
+
+export const useStyles = makeStyles((theme: Theme) => ({
     container: {
         paddingTop: 100,
         '& input, & .ant-input-password': {
@@ -13,6 +14,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     logoWrapper: {
         marginBottom: 50,
+        textAlign: 'center'
     },
     buttonWrapper: {
         marginTop: 10,

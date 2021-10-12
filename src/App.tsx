@@ -17,7 +17,7 @@ import './configs/locale.utc';
 /**
  * Apollo Client
  */
-import { ApolloProvider, useQuery } from '@apollo/react-hooks';
+import { ApolloProvider, ApolloClient, useQuery } from '@apollo/react-hooks';
 import createClient from './apollo/clients/hybrid.client';
 
 /**
@@ -61,7 +61,7 @@ export default function App() {
     );
 }
 
-function TokenLoader({ children }) {
+function TokenLoader({ children }: any) {
     const [load, setLoad] = useState(false);
     const [tokenLoaded, setTokenLoaded] = useState(false);
     const { data: verifyData, error: verifyError } = useQuery(VERIFY_LOGIN);

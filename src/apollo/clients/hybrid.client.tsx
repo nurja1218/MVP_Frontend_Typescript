@@ -15,12 +15,12 @@ import {
 import { createNetworkStatusNotifier } from 'react-apollo-network-status';
 import { Spin } from 'antd';
 
-let client;
+let client: any;
 
-const { useApolloNetworkStatus, link: networkStatusNotifierLink } = createNetworkStatusNotifier();
+const { useApolloNetworkStatus, link: networkStatusNotifierLink }: any = createNetworkStatusNotifier();
 
-function GlobalLoadingIndicator({ children }) {
-    const { numPendingQueries, numPendingMutations } = useApolloNetworkStatus();
+function GlobalLoadingIndicator({ children }: any) {
+    const { numPendingQueries, numPendingMutations }: any = useApolloNetworkStatus();
 
     return (
         <Spin size="large" spinning={numPendingQueries > 0 || numPendingMutations > 0}>
@@ -29,13 +29,13 @@ function GlobalLoadingIndicator({ children }) {
     );
 }
 
-const httpLink = (type) =>
+const httpLink: any = (type: any) =>
     createHttpLink({
         uri: `${ENDPOINT}`,
         credentials: 'include',
     });
 
-const authLink = (token) =>
+const authLink: any = (token: any) =>
     setContext((_, { headers }) => ({
         headers: {
             ...headers,
@@ -43,7 +43,7 @@ const authLink = (token) =>
         },
     }));
 
-const wsLink = (type, token) =>
+const wsLink: any = (type: any, token: any) =>
     new WebSocketLink({
         uri: `wss://${BACKEND_URI}:${getBackendPort(type)}${ENDPOINT}`,
         options: {
@@ -58,10 +58,10 @@ const wsLink = (type, token) =>
 /**
  * Hybrid Link (WebSocketLink / HttpLink)
  */
-const link = (type, token) =>
+const link: any = (type: any, token: any) =>
     split(
         ({ query }) => {
-            const { kind, operation } = getMainDefinition(query);
+            const { kind, operation }: any = getMainDefinition(query);
             return kind === 'OperationDefinition' && operation === 'subscription';
         },
         wsLink(type, token),
@@ -74,7 +74,7 @@ const link = (type, token) =>
  *
  * first JWT Exception after login -> refetch
  */
-const linkOnError = (logout) =>
+const linkOnError: any = (logout: any) =>
     onError(({ graphQLErrors: errors, operation, forward }) => {
         if (client && errors) {
             for (const error of errors) {
@@ -107,7 +107,7 @@ const linkOnError = (logout) =>
 /**
  * type: "company" | "root" | "guest"
  */
-client = (type, accessToken, logout) =>
+client = (type: any, accessToken: any, logout: any) =>
     new ApolloClient({
         link: concat(linkOnError(logout), link(type === 'root' ? 'root' : 'company', accessToken)),
         cache,
