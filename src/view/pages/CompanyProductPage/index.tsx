@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSetRecoilState } from 'recoil';
-import { currentMenuState } from '@/recoil/atoms';
-import ProductTableContainer from '@/view/containers/ProductTableContainer';
+import { currentMenuState } from '../../../recoil/atoms';
+import ProductTableContainer from '../../../view/containers/ProductTableContainer';
 
 export default function CompanyProductPage() {
     const { t } = useTranslation();

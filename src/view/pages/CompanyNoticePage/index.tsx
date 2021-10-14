@@ -7,7 +7,7 @@ export default function CompanyNoticePage(){
     const [tabledata, setTabledata] = useState({
         allDeviceCount: 'Notice'
     })
-    const setCurrentMenu = useSetRecoilState(currentMenuState);
+    const setCurrentMenu: any = useSetRecoilState(currentMenuState);
     useEffect(()=> {
         setCurrentMenu(['공지사항']);
     }, [setCurrentMenu]);

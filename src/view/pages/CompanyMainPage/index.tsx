@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { currentMenuState } from '@/recoil/atoms';
-import MainContainer from '@/view/containers/MainContainer';
+import { currentMenuState } from '../../../recoil/atoms';
+import MainContainer from '../../../view/containers/MainContainer';
 import { useTranslation } from 'react-i18next';
 
 export default function CompanyControlPage() {

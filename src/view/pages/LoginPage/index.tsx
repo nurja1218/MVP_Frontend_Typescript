@@ -32,7 +32,7 @@ export default function LoginPage() {
 	// 페이지 랜더링이 아닌 submit에만 login 데이터 읽어오도록 useLazyQuery 사용
 	const [login, { data, error }] = useLazyQuery(LOGIN);
 	// 로그인을 한번 한 후의 동작할 handler
-	// recoil selector.js에서 loginHandler
+	// recoil selector에서 loginHandler
 	// - get함수: 토큰으로 로그인 상태 정의 / - set함수: 첫 로그인 시 roleId로 등급 분류
 	const setAfterLogin = useSetRecoilState(loginHandler);
 	console.log(classes)

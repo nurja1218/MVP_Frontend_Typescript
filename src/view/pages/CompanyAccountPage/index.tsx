@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSetRecoilState } from 'recoil';
-import { currentMenuState } from '@/recoil/atoms';
-import AccountTableContainer from '@/view/containers/AccountTableContainer';
+import { currentMenuState } from '../../../recoil/atoms';
+import AccountTableContainer from '../../../view/containers/AccountTableContainer';
 
 export default function CompanyAccountPage() {
     const { t } = useTranslation();
