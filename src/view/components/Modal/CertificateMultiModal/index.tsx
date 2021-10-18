@@ -7,8 +7,8 @@ import { message } from 'antd';
 import { useStyles } from '../CertificateModal/style';
 import { CERTIFICATE_BY_UUID_MUTATION } from '../../../../apollo/scripts/queries';
 import { useMutation } from '@apollo/react-hooks';
-import { exportToPDF } from '@/tools/file-export/pdf';
-import ViewerSection from '@/view/components/ViewerSection';
+import { exportToPDF } from '../../../../tools/file-export/pdf';
+import ViewerSection from '../../../../view/components/ViewerSection';
 import SubmitButton from '../../SubmitButton';
 import { CertificateView } from '../CertificateModal';
 import { useTranslation } from 'react-i18next';
@@ -35,12 +35,12 @@ import { useTranslation } from 'react-i18next';
 // };
 
 export default function CertificateMultiModal() {
-    const classes = useStyles();
+    const classes: any = useStyles();
     const { t, i18n } = useTranslation();
-    const [modal, setModal] = useRecoilState(certificatesState);
-    const [certificate, setCertificate] = useState(null);
+    const [modal, setModal] = useRecoilState<any>(certificatesState);
+    const [certificate, setCertificate] = useState<any>(null);
     const [getCertificate] = useMutation(CERTIFICATE_BY_UUID_MUTATION);
-    const [isStart, setIsStart] = useState(false);
+    const [isStart, setIsStart] = useState<any>(false);
 
     const handleDownload = async () => {
         setIsStart(true);
@@ -71,7 +71,7 @@ export default function CertificateMultiModal() {
     useEffect(() => {
         async function download() {
             if (!certificate) return;
-            const { productName, departureTime } = certificate;
+            const { productName, departureTime }: any = certificate;
             try {
                 await exportToPDF({
                     domId: 'viewer-section',
@@ -102,7 +102,7 @@ export default function CertificateMultiModal() {
                     <Grid item xs={12} sm={10}>
                         <span>{t('출하증명서 다운로드')}</span>
                     </Grid>
-                    <Grid item xs={12} sm={2} align="right">
+                    <Grid item xs={12} sm={2} className={classes.gridAlign}>
                         <CloseOutlinedIcon className={classes.iconButton} onClick={handleClose} />
                     </Grid>
                 </Grid>

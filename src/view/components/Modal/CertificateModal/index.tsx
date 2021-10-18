@@ -1,5 +1,7 @@
 import { Dialog, DialogTitle, DialogActions, DialogContent, Grid } from '@material-ui/core';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import { Table } from 'antd';
+import TextEllipsis from '../../../components/ColumnRenderers/TextEllipsis';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { certificateState } from '../../../../recoil/atoms';
@@ -9,36 +11,18 @@ import { useStyles } from './style';
 import { CERTIFICATE_BY_UUID } from '../../../../apollo/scripts/queries';
 import { useQuery } from '@apollo/react-hooks';
 import moment from 'moment';
-import { exportToPDF } from '@/tools/file-export/pdf';
-import ViewerSection from '@/view/components/ViewerSection';
+import { exportToPDF } from '../../../../tools/file-export/pdf';
+import ViewerSection from '../../../../view/components/ViewerSection';
 import { useTranslation } from 'react-i18next';
 
-// const sampleData = {
-//     productName: 'AZ백신',
-//     quantity: '10',
-//     size: '1 Vial',
-//     storageMethod: '냉장보관',
-//     manufacturerName: '(주)윌로그',
-//     manufacturerAddress: '서울시 강남구 선릉로 513 8F',
-//     manufactureNumber: 'AZ27805',
-//     expirationDate: '20190405',
-//     sellerName: '(주)윌로그바이오',
-//     sellerAddress: '서울시 강남구 선릉로 513 8F',
-//     packageMethod: '냉장제품 2~8°C 보관',
-//     departureTime: '2021.07.14 12:49',
-//     receiverName: '(주)윌로그상사',
-//     receiverAddress: '서울시 강남구 선릉로 513 8F',
-//     temperature: '2.4°C',
-//     arrivalTime: '2021.07.14 13:49',
-//     sellerSignature: '/assets/common/sellerSignature.png',
-//     receiverSignature: '/assets/common/receiverSignature.png',
-// };
 
 export default function CertificateModal() {
-    const classes = useStyles();
+    const classes: any = useStyles();
     const { t } = useTranslation();
-    const [modal, setModal] = useRecoilState(certificateState);
-    const [certificate, setCertificate] = useState(null);
+    const [modal, setModal]: any = useRecoilState(certificateState);
+    const [certificate, setCertificate] = useState<any>(null);
+    const [recordSeps, setRecordSeps] = useState<any>([]);
+    const pageSize: any = 36;
     const { data, error } = useQuery(CERTIFICATE_BY_UUID, {
         variables: {
             uuid: modal.uuid,
@@ -49,7 +33,17 @@ export default function CertificateModal() {
 
     useEffect(() => {
         if (data) {
-            setCertificate(data.certificateByUUID);
+            if (data) {
+                const { certificateByUUID } = data;
+                const { record } = certificateByUUID;
+                const { temperature } = record;
+                setCertificate(certificateByUUID);
+                const recordArrays: any = [];
+                for (let i = 0; i < temperature.length; i += pageSize) {
+                    recordArrays.push(temperature.slice(i, i + pageSize));
+                }
+                setRecordSeps(recordArrays);
+            }
         }
         if (error) {
             message.error(t('출하증명서를 불러오는 중 문제가 발생했습니다.'));
@@ -66,7 +60,7 @@ export default function CertificateModal() {
         }
         const { productName, departureTime } = certificate;
         exportToPDF({
-            domId: 'viewer-section',
+            domId: ['viewer-section', 'viewer-section-2'],
             filename: `출하증명서-${productName}-${departureTime}`,
         })
             .then(() => {
@@ -100,7 +94,7 @@ export default function CertificateModal() {
                     <Grid item xs={12} sm={10}>
                         <span>{t('출하증명서')}</span>
                     </Grid>
-                    <Grid item xs={12} sm={2} align="right">
+                    <Grid item xs={12} sm={2} className={classes.gridAlign}>
                         <CloseOutlinedIcon className={classes.iconButton} onClick={handleClose} />
                     </Grid>
                 </Grid>
@@ -110,9 +104,21 @@ export default function CertificateModal() {
                     className={`${classes.wrapper} certificate`}
                     style={{ position: 'relative' }}
                 >
-                    <ViewerSection>
+                    <ViewerSection domId="certificate-view">
                         <CertificateView certificate={certificate} />
                     </ViewerSection>
+                    {recordSeps.map((temperature: any, idx: any) => (
+                        <ViewerSection domId={`record-view-${idx}`} key={idx}>
+                            {/* 온도 기록 View */}
+                            <CertificateRecordView
+                                page={idx}
+                                pageSize={pageSize}
+                                temperature={temperature}
+                                interval={certificate.record.interval}
+                                indexTime={certificate.record.indexTime}
+                            />
+                        </ViewerSection>
+                    ))}
                 </DialogContent>
             )}
             {certificate && certificate.certificateStatusId === 'ISSUED' && (
@@ -131,8 +137,8 @@ export default function CertificateModal() {
     );
 }
 
-export function CertificateView({ certificate }) {
-    const classes = useStyles();
+export function CertificateView({ certificate }: any) {
+    const classes: any = useStyles();
     return (
         <div className={classes.certificateWrap}>
             <h2 className={classes.tableTitle}>생물학적 제제등 출하증명서</h2>
@@ -167,9 +173,9 @@ export function CertificateView({ certificate }) {
                         <tr>
                             <td rowSpan={4} className={classes.user}>
                                 <p
-                                    style={{
-                                        writingMode: 'tb-rl',
-                                    }}
+                                    // style={{
+                                    //     writingMode: 'tb-rl',
+                                    // }}
                                 >
                                     제조(수입)업자
                                 </p>
@@ -205,7 +211,9 @@ export function CertificateView({ certificate }) {
                     <tbody>
                         <tr>
                             <td rowSpan={4} className={classes.user}>
-                                <p style={{ writingMode: 'tb-rl' }}>판매(출하)자</p>
+                                <p
+                                    // style={{ writingMode: 'tb-rl' }}
+                                >판매(출하)자</p>
                             </td>
                         </tr>
                         <tr>
@@ -238,7 +246,9 @@ export function CertificateView({ certificate }) {
                     <tbody>
                         <tr>
                             <td rowSpan={4} className={classes.user}>
-                                <p style={{ writingMode: 'tb-rl' }}>수령자</p>
+                                <p
+                                    // style={{ writingMode: 'tb-rl' }}
+                                >수령자</p>
                             </td>
                         </tr>
                         <tr>
@@ -283,7 +293,7 @@ export function CertificateView({ certificate }) {
                             .local()
                             .format('YYYY년 MM월 DD일')}
                     </Grid>
-                    <Grid item xs={12} sm={12} className={classes.signatureWrap} align="right">
+                    <Grid item xs={12} sm={12} className={`${classes.signatureWrap} ${classes.gridAlign}`}>
                         <Grid container>
                             <Grid item xs={12} sm={6}>
                                 판매(출하)자
@@ -297,7 +307,7 @@ export function CertificateView({ certificate }) {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={12} className={classes.signatureWrap} align="right">
+                    <Grid item xs={12} sm={12} className={`${classes.signatureWrap} ${classes.gridAlign}`}>
                         <Grid container>
                             <Grid item xs={12} sm={6} style={{ letterSpacing: 5 }}>
                                 수령자
@@ -318,5 +328,94 @@ export function CertificateView({ certificate }) {
                 </Grid>
             </div>
         </div>
+    );
+}
+
+// Table columns
+const columns = [
+    {
+        title: 'No.',
+        width: '80px',
+        dataIndex: 'id',
+    },
+    {
+        title: '일시',
+        dataIndex: 'updatedAt',
+    },
+    {
+        title: '온도',
+        dataIndex: 'temperature',
+    },
+];
+
+export function CertificateRecordView({ temperature, interval, indexTime, page, pageSize }: any) {
+    const classes = useStyles();
+    const [tableData, setTableData] = useState({
+        result: [],
+    });
+    useEffect(() => {
+        if (temperature) {
+            setTableData({
+                result: temperature.map((value: any, idx: any) => ({
+                    id: idx + 1 + page * pageSize,
+                    key: idx + 1,
+                    updatedAt: moment(indexTime)
+                        .add(idx * interval, 's')
+                        .local()
+                        .format('YY/MM/DD HH:mm'),
+                    temperature: value,
+                })),
+            });
+        }
+    }, [temperature, indexTime, interval, page, pageSize]);
+    return (
+        <div className={classes.recordWrapper}>
+            <div className={classes.tableStyle}>
+                <table style={{ tableLayout: 'fixed' }}>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>일시</th>
+                            <th>온도(℃)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tableData.result.map((value: any, idx: any) => (
+                            <tr key={idx}>
+                                <td>{value.id}</td>
+                                <td>{value.updatedAt}</td>
+                                <td>{value.temperature}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+export function TopRotatedBracket() {
+    return (
+        <span
+            style={{
+                transform: 'rotate(90deg)',
+                writingMode: 'horizontal-tb',
+            }}
+        >
+            (
+        </span>
+    );
+}
+
+export function BottomRotatedBracket() {
+    return (
+        <span
+            style={{
+                transform: 'rotate(90deg)',
+                writingMode: 'horizontal-tb',
+            }}
+        >
+            )
+        </span>
     );
 }

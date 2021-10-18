@@ -30,6 +30,46 @@ import { useTranslation } from 'react-i18next';
 // import TextEllipsis from '@/components/ColumnRenderers/TextEllipsis';
 // import numberSorter from '@/view/components/DataTable/sorter/number.sorter';
 
+interface TableResultIndex {
+    createdAt: string;
+    id: number;
+    key: string;
+    maxHumidity?: number | null;
+    maxShock?: number | null;
+    maxTemperature?: number | null;
+    minHumidity?: number | null;
+    minTemperature?: number | null;
+    name: string;
+    placeName: string;
+    updatedAt?: number | undefined;
+}
+interface TableResult {
+    result: Array<TableResultIndex>
+}
+
+interface Page {
+    currentPage?: number;
+    pageSize?: number;
+    pageNumber?: number;
+    totalItems?: number;
+    totalPages?: number;
+}
+
+interface TableTypeDB {
+    result: Array<TableResultIndex>;
+    pages: Page;
+}
+
+interface ProductId {
+    id : string
+}
+
+interface ModalType {
+    key?: string;
+    open: boolean;
+    type: string;
+}
+
 const defaultColumns = [
     /**
      * title : 테이블 헤더(th)
@@ -49,7 +89,7 @@ const defaultColumns = [
         title: '제품명',
         width: '20%',
         dataIndex: 'name',
-        render: (text: any) => <TextEllipsis>{text}</TextEllipsis>,
+        render: (text: string) => <TextEllipsis>{text}</TextEllipsis>,
     },
     {
         title: '온도 범위',
@@ -63,7 +103,7 @@ const defaultColumns = [
         title: '충격 범위(MAX)',
         width: '15%',
         dataIndex: 'maxShock',
-        render: (value: any) => <TextEllipsis>{value || '-'}</TextEllipsis>,
+        render: (value: number) => <TextEllipsis>{value || '-'}</TextEllipsis>,
     },
     {
         title: '등록일',
@@ -75,7 +115,7 @@ const defaultColumns = [
         title: '변경',
         width: '150px',
         dataIndex: 'modifyKey',
-        render: (key: any) => <ProductChangeButton id={key} />,
+        render: (key: string) => <ProductChangeButton id={key} />,
     },
 ];
 
@@ -84,13 +124,13 @@ const moreColumnsByAdminM = [
         title: '삭제',
         width: '150px',
         dataIndex: 'deleteKey',
-        render: (key: any) => <ProductDeleteButton id={key} />,
+        render: (key: string) => <ProductDeleteButton id={key} />,
     },
 ];
 
 
 // 변경 버튼
-function ProductChangeButton({ id: productId }: any) {
+function ProductChangeButton({ id: productId }: ProductId) {
     const { t } = useTranslation();
     const setModal: any = useSetRecoilState(productModalState);
     const [hoverd, setHoverd] = useState(false);
@@ -125,7 +165,7 @@ function ProductChangeButton({ id: productId }: any) {
 }
 
 // 삭제 버튼
-function ProductDeleteButton({ id: productId }: any) {
+function ProductDeleteButton({ id: productId }: ProductId) {
     const { t } = useTranslation();
     const setNeedRefetch = useSetRecoilState(needRefetchState);
     const [hoverd, setHoverd] = useState(false);
@@ -213,7 +253,7 @@ export default function ProductTableContainer() {
         },
     });
     // page input 변수 선언
-    const [page, setPage] = useState<any>({
+    const [page, setPage] = useState<Page>({
         pageNumber: 1,
         pageSize: 100,
     });
@@ -248,10 +288,10 @@ export default function ProductTableContainer() {
         if (productsData) {
             // query명과 동일한 변수에 query 데이터를 담는다
             const { productsByCompany } = productsData;
-            const { result, pages }: any = tableMapper(productsByCompany, i18n.language);
+            const { result, pages }: TableTypeDB = tableMapper(productsByCompany, i18n.language);
             // tableData에 set함수로 데이터를 형태 변환할 부분을 바꾸고 동일하면 그대로 담는다
             setTableData({
-                result: result.map((r: any) => ({
+                result: result.map((r: TableResultIndex) => ({
                     ...r,
                     modifyKey: r.key,
                     deleteKey: r.key,

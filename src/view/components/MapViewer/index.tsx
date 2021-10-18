@@ -16,7 +16,7 @@ const generatePolylines = (markers: any) => {
     if (markers.length <= 1) {
         return [];
     }
-    const polylines = [];
+    const polylines: any = [];
     for (let i = 0; i < markers.length; i++) {
         polylines.push({
             lat: markers[i].latitude,

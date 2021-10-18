@@ -1,7 +1,41 @@
 import { makeStyles } from '@material-ui/core';
-import { colors } from '@/configs/variables';
+import { colors } from '../../../../configs/variables';
 
 export const useStyles = makeStyles((theme) => ({
+    gridAlign: {
+        textAlign: 'right'
+    },
+    tableStyle: {
+        '& table': {
+            fontFamily:
+                "'Nanum Myeongjo', -apple-system, 'Noto Sans KR', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+            fontSize: '1vw',
+            width: '100%',
+            borderCollapse: 'collapse',
+            border: `1px solid ${colors.CG400}`,
+            borderBottom: 'none',
+            '&:nth-last-of-type(1)': {
+                borderBottom: `0.5px solid ${colors.CG400}`,
+            },
+        },
+        '& th': {
+            width: '15%',
+            padding: '0.3vw .4vw 0.3vw 1.5vw',
+            border: `0.5px solid ${colors.CG400}`,
+            borderBottom: 'none',
+            borderLeft: 'none',
+        },
+        '& tr': {
+            border: `0.5px solid ${colors.CG400}`,
+            borderBottom: 'none',
+        },
+        '& td': {
+            padding: '0.3vw .4vw 0.3vw 1.5vw',
+            border: `0.5px solid ${colors.CG400}`,
+            borderBottom: 'none',
+            borderLeft: 'none',
+        },
+    },
     iconButton: {
         cursor: 'pointer',
         fill: colors.CG500,
@@ -12,12 +46,12 @@ export const useStyles = makeStyles((theme) => ({
     wrapper: {
         position: 'relative',
         padding: '0px !important',
-        fontSize: 14,
+        fontSize: '.5vw',
     },
     header: {
         position: 'sticky',
         top: 0,
-        padding: '25px 40px',
+        padding: '2vw 3vw',
         borderBottom: `1px solid ${colors.BORDER_GREY}`,
         lineHeight: 1,
         '&.setting': {
@@ -27,7 +61,7 @@ export const useStyles = makeStyles((theme) => ({
             },
         },
         '& span': {
-            fontSize: 18,
+            fontSize: '1vw',
             fontWeight: 700,
         },
     },
@@ -38,22 +72,22 @@ export const useStyles = makeStyles((theme) => ({
             },
         },
         '& .MuiDialog-paperWidthMd': {
-            maxWidth: '1200px !important',
+            maxWidth: 'none !important',
         },
         '& .MuiPaper-root': {
             overflow: 'hidden',
         },
     },
     certificateWrap: {
-        fontSize: 18,
+        fontSize: '1vw',
         letterSpacing: 1,
-        padding: 80,
+        padding: '5vw',
         wordBreak: 'keep-all',
         fontFamily:
             "'Nanum Myeongjo', -apple-system, 'Noto Sans KR', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
         '& > span': {
             float: 'right',
-            marginRight: 20,
+            marginRight: '1.5vw',
         },
         cursor: 'default',
         userSelect: 'none',
@@ -73,30 +107,30 @@ export const useStyles = makeStyles((theme) => ({
             borderBottom: 'none',
         },
         '& td': {
-            padding: '15px 12px 15px 15px',
+            padding: '1vw .8vw 1vw 1vw',
             border: `0.5px solid ${colors.CG400}`,
             borderBottom: 'none',
             borderLeft: 'none',
         },
     },
     tableTitle: {
-        margin: '50px 0 100px',
-        fontSize: 30,
+        margin: '0vw 0 4vw',
+        fontSize: '1.5vw',
         fontWeight: 700,
         textAlign: 'center',
     },
     user: {
-        width: 20,
-        padding: '7px 3px !important',
+        width: '1.5vw',
+        padding: '1vw 0.4vw !important',
         '& p': {
             margin: '0 auto',
         },
     },
     cellName: {
-        width: 100,
+        width: '6vw',
     },
     cellContent: {
-        width: 170,
+        width: '11vw',
         '& span': {
             display: 'inline-block',
             marginRight: 15,
@@ -104,17 +138,17 @@ export const useStyles = makeStyles((theme) => ({
         },
     },
     footer: {
-        margin: '30px 0',
+        margin: '2vw 0',
         lineHeight: 1.75,
         letterSpacing: 1.3,
     },
     issueDate: {
-        margin: '50px 0',
+        margin: '3vw 0',
         textAlign: 'center',
         letterSpacing: 2,
     },
     signatureWrap: {
-        margin: '10px 0',
+        margin: '.6vw 0',
     },
     signatureName: {
         paddingLeft: 20,
@@ -126,7 +160,11 @@ export const useStyles = makeStyles((theme) => ({
             position: 'absolute',
             top: -15,
             right: 0,
-            width: 100,
+            width: '6vw',
         },
+    },
+    recordWrapper: {
+        padding: '7% 10% 0',
+        userSelect: 'none',
     },
 }));
